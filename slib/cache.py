@@ -5,8 +5,11 @@ from slib.config import SConfig
 
 SCACHE = None
 
-class MemoryCacheValueNotFound(Exception):
-    '''Rised when value found.'''
+class MemoryCacheHashKeyNotFound(Exception):
+    '''Rised when hash key not found.'''
+
+class MemoryCacheKeyNotFound(Exception):
+    '''Rised when key not found.'''
 
 class SCache():
     '''Access default memory cache.'''
@@ -27,7 +30,7 @@ class SCache():
     def hset(hashkey, key, value):
         '''set a hash value.'''
 
-        SCACHE.hset(hashkey, key, value)
+        return SCACHE.hset(hashkey, key, value)
 
     @staticmethod
     def hget(hashkey, key):
@@ -35,20 +38,35 @@ class SCache():
 
         ret_val = SCACHE.hget(hashkey, key)
 
+        if ret_val is None:
+            raise MemoryCacheKeyNotFound
+
         return ret_val
 
     @staticmethod
     def hdel(hashkey, key):
         '''delete a specified value.'''
 
-        SCACHE.hdel(hashkey, key)
+        ret_val = SCACHE.hdel(hashkey, key)
+
+        if ret_val == 0:
+            raise MemoryCacheKeyNotFound
+
+        return ret_val
 
     @staticmethod
     def hexists(hashkey, key):
         '''check whether the specified value exist.'''
+
         return SCACHE.hexists(hashkey, key)
 
     @staticmethod
     def hkeys(hashkey):
         '''get all keys in the specified hash.'''
-        return SCACHE.hkeys(hashkey)
+
+        ret_val_list = SCACHE.hkeys(hashkey)
+
+        if not ret_val_list:
+            raise MemoryCacheHashKeyNotFound
+
+        return ret_val_list
