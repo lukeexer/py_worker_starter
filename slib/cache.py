@@ -1,6 +1,7 @@
 # pylint: disable=W0603
 '''Redis memory cache library.'''
 import redis
+from slib.config import SConfig
 
 SCACHE = None
 
@@ -11,11 +12,16 @@ class SCache():
     '''Access default memory cache.'''
 
     @staticmethod
-    def init():
+    def init(host, port):
         '''Initialize memory cache.'''
         global SCACHE
 
-        SCACHE = redis.StrictRedis('localhost', 6379, encoding="utf-8", decode_responses=True)
+        if host is not None:
+            SCACHE = redis.StrictRedis(host, port, encoding="utf-8", decode_responses=True)
+        else:
+            host = SConfig.get_str_conf('memory_cache_host')
+            port = SConfig.get_int_conf('memory_cache_port')
+            SCACHE = redis.StrictRedis(host, port, encoding="utf-8", decode_responses=True)
 
     @staticmethod
     def hset(hashkey, key, value):

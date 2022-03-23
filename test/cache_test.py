@@ -15,7 +15,7 @@ class TestSCache(unittest.TestCase):
         self.hash_key2 = 'key2'
         self.hash_value2 = 'value2'
 
-        SCache.init()
+        SCache.init('localhost', 6379)
 
         SCache.hset(self.hash_name, self.hash_key1, self.hash_value1)
         SCache.hset(self.hash_name, self.hash_key2, self.hash_value2)
