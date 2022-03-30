@@ -1,6 +1,6 @@
 # pylint: disable=W0603
 '''Sqlite library.'''
-from os import stat
+
 import sqlite3
 from slib.config import SConfig
 
@@ -25,30 +25,34 @@ class SSqlite():
 
     @staticmethod
     def execute(sql=None):
-        SQLITE_CONN = sqlite3.connect(SQLITE_FILE)
+        '''Execute SQL command.'''
 
-        cur = SQLITE_CONN.cursor()
+        conn = sqlite3.connect(SQLITE_FILE)
+
+        cur = conn.cursor()
 
         count = cur.execute(sql).rowcount
 
-        SQLITE_CONN.commit()
+        conn.commit()
 
-        SQLITE_CONN.close()
+        conn.close()
 
         return count
 
     @staticmethod
     def fetch_all(sql=None):
-        SQLITE_CONN = sqlite3.connect(SQLITE_FILE)
+        '''Fetch all query result from database.'''
 
-        cur = SQLITE_CONN.cursor()
+        conn = sqlite3.connect(SQLITE_FILE)
+
+        cur = conn.cursor()
 
         cur.execute(sql)
 
         result = cur.fetchall()
 
-        SQLITE_CONN.commit()
+        conn.commit()
 
-        SQLITE_CONN.close()
+        conn.close()
 
         return result
