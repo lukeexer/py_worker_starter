@@ -2,6 +2,7 @@
 '''Unit test for SValidate library.'''
 import unittest
 import os
+
 from pathlib import Path
 
 from slib.log import SLog
