@@ -73,12 +73,19 @@ class TestSConfig(unittest.TestCase):
         with self.assertRaises(ConfigNotFound):
             SConfig.get_int_conf('key_not_exist')
 
-    def test_is_conf_exist(self):
-        '''Check whether a key exists in configuration file.'''
+    def test_conf_exist(self):
+        '''Check a specific key exists in configuration file.'''
 
         ret_val = SConfig.is_conf_exist(self.str_key_2)
 
         self.assertTrue(ret_val)
+
+    def test_is_conf_not_exist(self):
+        '''Check a specific key not exists in configuration file.'''
+
+        ret_val = SConfig.is_conf_exist('key_not_exist')
+
+        self.assertFalse(ret_val)
 
     def test_get_all_keys(self):
         '''Check all keys exist.'''

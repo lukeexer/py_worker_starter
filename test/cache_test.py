@@ -2,6 +2,8 @@
 import unittest
 
 from slib.cache import SCache
+from slib.cache import MemoryCacheKeyNotFound
+from slib.cache import MemoryCacheHashKeyNotFound
 
 class TestSCache(unittest.TestCase):
     '''Test case class.'''
@@ -33,6 +35,18 @@ class TestSCache(unittest.TestCase):
 
         self.assertEqual(self.hash_value1, ret_val)
 
+    def test_hget_with_key_not_exist(self):
+        '''Get exception when a specific key does not exist.'''
+
+        with self.assertRaises(MemoryCacheKeyNotFound):
+            SCache.hget(self.hash_name, 'Key_not_exist')
+
+    def test_hdel_with_key_not_exist(self):
+        '''Get exception when a specific key does not exist.'''
+
+        with self.assertRaises(MemoryCacheKeyNotFound):
+            SCache.hdel(self.hash_name, 'Key_not_exist')
+
     def test_hset(self):
         '''Test hset function.'''
 
@@ -59,3 +73,9 @@ class TestSCache(unittest.TestCase):
 
         self.assertEqual(self.hash_key1, ret_val[1])
         self.assertEqual(self.hash_key2, ret_val[2])
+
+    def test_hkeys_with_key_not_exist(self):
+        '''Get exception when hash key does not exist.'''
+
+        with self.assertRaises(MemoryCacheHashKeyNotFound):
+            SCache.hkeys('hash_key_not_exist')
