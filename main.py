@@ -1,7 +1,6 @@
 # pylint: disable=W0703
 """Main function."""
 import traceback
-import time
 
 from slib.init import SInit
 from slib.log import SLog
